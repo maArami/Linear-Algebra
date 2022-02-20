@@ -5,26 +5,34 @@
 #include <vector>
 
 using Matrix = std::vector<std::vector<double>>;
-
+//------------------------------zeros----------------------------------------
 Matrix algebra::zeros(size_t n, size_t m)
 {
-
+    if(n<=0 || m<=0)
+        throw std::logic_error("invalied input");
+    else
+    {
     Matrix mat(n, std::vector<double>(m, 0));
     return mat;
+    }
 }
-
+//------------------------------ones----------------------------------------
 Matrix algebra::ones(size_t n, size_t m)
 {
+    if(n<=0 || m<=0)
+        throw std::logic_error("invalied input");
+    else
+    {   
     Matrix mat(n, std::vector<double>(m, 1));
     return mat;
+    }
 }
-
+//------------------------------random---------------------------------------
 Matrix  algebra::random(size_t n, size_t m, double min, double max)
 {
     if(min>=max)
     {
-        perror("Envalied input");
-        exit(-1);
+        throw std::logic_error("invalied input");
     }
     else
     {
@@ -39,7 +47,7 @@ Matrix  algebra::random(size_t n, size_t m, double min, double max)
         return mat;
     }  
 }
-
+//------------------------------show---------------------------------------
 void algebra::show(const Matrix& matrix)
 {
     size_t n { matrix.size() };
@@ -52,7 +60,7 @@ void algebra::show(const Matrix& matrix)
         std::cout << std::endl;
     }
 }
-
+//------------------------------multiply1---------------------------------------
 Matrix algebra::multiply(const Matrix& matrix, double c)
 {
     size_t n { matrix.size() };
@@ -65,18 +73,23 @@ Matrix algebra::multiply(const Matrix& matrix, double c)
             mat1[i][j] = matrix[i][j] * c;
     return mat1;
 }
-
+//------------------------------multiply2---------------------------------------
 Matrix algebra::multiply(const Matrix& matrix1, const Matrix& matrix2)
 {
+    if(matrix1.size()*matrix2.size() ==0)
+    {
+        Matrix rslt{};
+        return rslt;
+    }
+    
     size_t n1 { matrix1.size() };
     size_t m1 { matrix1[0].size() };
     size_t n2 { matrix2.size() };
     size_t m2 { matrix2[0].size() };  
 
-    if(m1!=n2 || n1*m1*n2*m2==0)
+    if(m1!=n2 )
     {
-        perror("Envalied input");
-        exit(-1);   
+        throw std::logic_error("you can't Multiply these matrix");
     }
     else
     {    

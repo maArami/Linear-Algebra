@@ -52,7 +52,7 @@ void algebra::show(const Matrix& matrix)
     std::cout << std::setprecision(3);
     for (size_t i {}; i < n; ++i) {
         for (size_t j {}; j < m; ++j)
-            std::cout << matrix[i][j] << "  ";
+            std::cout << std::setw(8)<<matrix[i][j] ;
         std::cout << std::endl;
     }
 }
@@ -207,12 +207,17 @@ double algebra::determinant(const Matrix& matrix)
         double rslt{1};
         return rslt;
     }
-    
+
     size_t n { matrix.size() };
     size_t m { matrix[0].size() };
+    if(n==1 && m==1)
+    {
+        double rslt{matrix[0][0]};
+        return rslt;
+    }
     if(n!=m)
         throw std::logic_error("this matrix hasn't determinan");
-    else if(n==2)
+    if(n==2)
     {
         double rslt{matrix[0][0]*matrix[1][1] - matrix[0][1]*matrix[1][0]};
         return rslt;
@@ -226,4 +231,73 @@ double algebra::determinant(const Matrix& matrix)
         }
         return rslt;
     }
+}
+//------------------------------invers---------------------------------------
+Matrix algebra::inverse(const Matrix& matrix)
+{
+    if(matrix.size()==0)
+    {
+        Matrix rslt{};
+        return rslt;
+    }
+    size_t n { matrix.size() };
+    size_t m { matrix[0].size() };
+    if(n!=m || algebra::determinant(matrix)==0)
+        throw std::logic_error("this matrix hasn't inverse");
+    
+
+    Matrix adj{algebra::zeros(n,n)};
+    Matrix c{algebra::zeros(n,n)};
+    Matrix rslt{};
+    for(size_t i{};i<n;i++)
+        for(size_t j{};j<n;j++)
+            c[i][j]=(std::pow(-1,i+j+2))*algebra::determinant(algebra::minor(matrix,i,j));
+    adj = algebra::transpose(c);
+    double a{algebra::determinant(matrix)};
+    adj = algebra::multiply(adj,1/a);
+        return adj;
+}
+//------------------------------concatenate--------------------------------------------
+Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0)
+{
+    if(matrix1.size() == 0)
+        return matrix2;
+    if(matrix2.size() == 0)
+        return matrix1;
+
+    size_t n1 { matrix1.size() };
+    size_t m1 { matrix1[0].size() };
+    size_t n2 { matrix2.size() };
+    size_t m2 { matrix2[0].size() };
+
+    if((axis == 0 && m1 != m2) || (axis == 1 && n1 != n2))
+        throw std::logic_error("invalied input.......");
+    
+    if(axis==0)
+    {
+        Matrix rslt{algebra::zeros(n1+n2,m1)};
+
+        for(size_t i{};i<n1+n2;i++)
+            for(size_t j{};j<m1;j++)
+            {   if(i<n1)
+                    rslt[i][j] = matrix1[i][j];
+                else
+                    rslt[i][j] = matrix2[i-n1][j];
+            }
+        return rslt;
+    }
+    else
+    {
+        Matrix rslt{algebra::zeros(n1,m1+m2)};
+
+        for(size_t i{};i<n1;i++)
+            for(size_t j{};j<m1+m2;j++)
+            {   if(j<m1)
+                    rslt[i][j] = matrix1[i][j];
+                else
+                    rslt[i][j] = matrix2[i][j-m1];
+            }
+        return rslt;       
+    }    
+ 
 }

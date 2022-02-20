@@ -20,6 +20,8 @@ namespace algebra
     Matrix transpose(const Matrix& matrix);
     Matrix minor(const Matrix& matrix, size_t n, size_t m);
     double determinant(const Matrix& matrix);
+    Matrix inverse(const Matrix& matrix);
+    Matrix concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis);
 }
 
 

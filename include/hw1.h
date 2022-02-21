@@ -1,14 +1,14 @@
 #ifndef AP_HW1_H
 #define AP_HW1_H
-#include <iostream>
-#include <vector>
-#include <random>
 #include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <random>
+#include <vector>
 
 using Matrix = std::vector<std::vector<double>>;
 
-namespace algebra
-{
+namespace algebra {
     Matrix zeros(size_t n, size_t m);
     Matrix ones(size_t n, size_t m);
     Matrix random(size_t n, size_t m, double min, double max);
@@ -28,5 +28,4 @@ namespace algebra
     Matrix upper_triangular(const Matrix& matrix);
 }
 
-
-#endif //AP_HW1_H
+#endif // AP_HW1_H

@@ -3,7 +3,7 @@
 #include "gmock/gmock.h"
 #include "hw1.h"
 
-/*
+
 TEST(HW1Test, ZEROS) {
     Matrix matrix{algebra::zeros(5, 6)};
 
@@ -56,6 +56,7 @@ TEST(HW1Test, RANDOM2) {
     // Caution: min cannot be greater than max
     EXPECT_THROW(algebra::random(3, 4, 4, 2), std::logic_error);
 }
+
 
 TEST(HW1Test, MULTIPLY1) {
     Matrix matrix{algebra::random(3, 4, -4, 2)};
@@ -244,6 +245,7 @@ TEST(HW1Test, INVERSE2) {
     EXPECT_NEAR(inverse[0][3], 0, 0.03);
 }
 
+
 TEST(HW1Test, CONCATENATE1) {
     // Caution: matrices with wrong dimensions cannot be concatenated
     EXPECT_THROW(algebra::concatenate(Matrix{{1, 2}}, Matrix{{1, 2, 3}, {4, 5, 6}}, 0), std::logic_error);
@@ -360,7 +362,7 @@ TEST(HW1Test, BONUS) {
     EXPECT_NEAR(res2[2][1], 0, 0.03);
     EXPECT_NEAR(res2[2][2], 39/4.0, 0.03);
 }
-*/
+
 
 
 

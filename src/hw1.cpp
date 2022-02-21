@@ -368,5 +368,43 @@ Matrix algebra::ero_sum(const Matrix& matrix, size_t r1, double c, size_t r2)
                 rslt[i][j] = matrix[i][j];
         }
     return rslt;
-    
+}
+//------------------------------upper_triangular----------------------------------------------
+Matrix algebra::upper_triangular(const Matrix& matrix)
+{
+    if(matrix.size()==0)
+        return matrix;
+    size_t n { matrix.size() };
+    size_t m { matrix[0].size() };
+    if(n!=m)
+        throw std::logic_error("this matrix coudn't became upper triangular because is not square");
+
+    Matrix rslt{matrix};
+    size_t k{};
+    size_t i{};
+    double c{};
+    for(size_t j{};j<m;j++)
+    {   
+        i=j+1;
+        while(i<n)
+        {
+            if(rslt[j][j] == 0)
+            {
+                rslt = algebra::ero_swap(rslt,j,j+k+1);
+                k++;
+                if(k>=n-1-j)
+                    throw std::logic_error("this matrix coudn't became upper triangular");
+                i=j+1;
+            }
+            else
+            {
+               c = -rslt[i][j]/rslt[j][j];
+               rslt = algebra::ero_sum(rslt,j,c,i);
+               i++; 
+            }
+
+        }
+        k=0;
+    }
+    return rslt;
 }

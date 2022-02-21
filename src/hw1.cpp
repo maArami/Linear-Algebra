@@ -258,7 +258,7 @@ Matrix algebra::inverse(const Matrix& matrix)
         return adj;
 }
 //------------------------------concatenate--------------------------------------------
-Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis=0)
+Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int axis)
 {
     if(matrix1.size() == 0)
         return matrix2;
@@ -300,4 +300,73 @@ Matrix algebra::concatenate(const Matrix& matrix1, const Matrix& matrix2, int ax
         return rslt;       
     }    
  
+}
+//------------------------------ero_swap--------------------------------------------
+Matrix algebra::ero_swap(const Matrix& matrix, size_t r1, size_t r2)
+{
+    if(matrix.size() == 0)
+        return matrix;
+
+    size_t n { matrix.size() };
+    size_t m { matrix[0].size() }; 
+    if(r1>n-1 || r2>n-1)
+        throw std::logic_error("the row that you entered is larger than the size of matrix");
+    
+    Matrix rslt{algebra::zeros(n,m)};
+    size_t tmp{};
+    for(size_t i{};i<n;i++)
+    {
+        tmp = i;
+        if(i==r1)
+            tmp=r2;
+        else if(i==r2)
+            tmp=r1;
+        for(size_t j{};j<m;j++)
+            rslt[i][j] = matrix[tmp][j];   
+    }
+    return rslt;
+}
+//------------------------------ero_multiply--------------------------------------------
+Matrix algebra::ero_multiply(const Matrix& matrix, size_t r, double c)
+{
+    if(matrix.size()==0)
+        return matrix;
+    size_t n { matrix.size() };
+    size_t m { matrix[0].size() }; 
+    if(r>n-1)
+        throw std::logic_error("the row that you entered is larger than the size of matrix");
+    
+    Matrix rslt{algebra::zeros(n,m)};
+    for(size_t i{};i<n;i++)
+        for(size_t j{};j<m;j++)
+        {
+            if(i == r)
+                rslt[i][j] = matrix[i][j]*c;
+            else
+                rslt[i][j] = matrix[i][j];
+        }
+    return rslt;
+    
+}
+//------------------------------ero_sum-----------------------------------------------
+Matrix algebra::ero_sum(const Matrix& matrix, size_t r1, double c, size_t r2)
+{
+    if(matrix.size()==0)
+        return matrix;
+    size_t n { matrix.size() };
+    size_t m { matrix[0].size() }; 
+    if(r1>n-1 || r2>n-1)
+        throw std::logic_error("the row that you entered is larger than the size of matrix");
+    
+    Matrix rslt{algebra::zeros(n,m)};
+    for(size_t i{};i<n;i++)
+        for(size_t j{};j<m;j++)
+        {
+            if(i == r2)
+                rslt[i][j] = matrix[r1][j]*c + matrix[r2][j];
+            else
+                rslt[i][j] = matrix[i][j];
+        }
+    return rslt;
+    
 }
